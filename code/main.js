@@ -25,6 +25,7 @@ onClick(() => {
 // burp on "b"
 onKeyPress("b", burp)
 
+//add new item or level to the screen
 addLevel([
   "!xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   $",
   "!xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   $",
@@ -67,7 +68,9 @@ layers([
   "bg",
   "obj",
   "ui",
-], "bg")
+], "obj")
+
+//adding text value
 const score = add([
   text("0"),
   layer("ui"),
@@ -77,3 +80,19 @@ const score = add([
   }
 
 ])
+
+//setting timer to our code
+const sab=60
+const timer = add([
+  text("0"),
+  layer("ui"),
+  pos(90,50),
+  {
+    time:sab
+  
+  }
+])
+timer.action(() => {
+  timer.time-= dt()
+  timer.text=timer.time.toFixed(3)
+})
