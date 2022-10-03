@@ -42,7 +42,7 @@ addLevel([
   height: 22,
   width: 30,
   "x": () => [
-    sprite("space-invader")
+    sprite("space-invader"), "space-invader", area(),
 
   ],
   "!": () => [
@@ -56,13 +56,13 @@ addLevel([
 
   ]
 })
-const un = 20
+const un = 200
 
 keyDown("right", () => {
-  v.move(un, 0)
+  j.move(un, 0)
 })
 keyDown("left", () => {
-  v.move(-un, 0)
+  j.move(-un, 0)
 })
 layers([
   "bg",
@@ -82,17 +82,45 @@ const score = add([
 ])
 
 //setting timer to our code
-const sab=60
-const timer = add([
-  text("0"),
-  layer("ui"),
-  pos(90,50),
-  {
-    time:sab
-  
-  }
-])
-timer.action(() => {
-  timer.time-= dt()
-  timer.text=timer.time.toFixed(3)
+// const sab = 60
+// const timer = add([
+//   text("0"),
+//   layer("ui"),
+//   pos(90, 50),
+//   {
+//     time: sab
+
+//   }
+// ])
+// timer.action(() => {
+//   timer.time -= dt()
+//   timer.text = timer.time.toFixed(3)
+// })
+function spawnBullet(p) {
+  add([
+    rect(6, 18),
+    pos(p),
+    origin("center"),
+    color(0.5, 0 - 5, 1),
+    area(),
+    "bullet"
+
+  ])
+}
+keyPress("space", () => {
+  spawnBullet(j.pos.add(0, -25))
+})
+const bulletspeed = 400
+action("bullet", (b) => {
+  b.move(0, -bulletspeed)
+  // if (b.pos.y > 0) {
+  //   destroy(b)
+  // }
+})
+
+collides("bullet", "space-invader", (b, s) => {
+  destroy(b)
+  destroy(s)
+  score.value++
+  score.text = score.value
 })
